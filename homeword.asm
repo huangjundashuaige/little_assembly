@@ -34,7 +34,7 @@ inner_loop:
             move $ra,$s7
         
             jr $ra
-outter_loop:
+bubble_sort:
     move $v1, $ra
     li $a2, 0
     li $s0, 40
@@ -59,9 +59,11 @@ get:
     li      $v0,   4                 # 打印字符串，输出
     la      $a0,   msg1
     syscall
-    la  $t7, array      
-    #la   $t8, msg2
-    #addi $t8, $t8, 24
+    la  $t7, array 
+
+    la   $t8, msg2
+    addi $t8, $t8, 25
+    
     warning:
         beq $s1, $zero, next
 
@@ -70,10 +72,10 @@ get:
         syscall
         
 
-        #lw $t9, 0($t8)
-        #li $s6, 1
-        #sub $t9, $t9, $s6
-        #sw $t9,0($t8)
+        lb $t9, 0($t8)
+        li $s6, 1
+        sub $t9, $t9, $s6
+        sb $t9,0($t8)
 
         next:li    $v0,   5                 # 接收键盘输入一整数（作为上届），接收到的数据存放在$v0中
         syscall
@@ -101,7 +103,7 @@ out:
         li $v0, 1                     # 4号 功能调用，输出字符串 
         syscall
 
-        la $a0,new_line
+        la $a0,space_key
         li $v0, 4
         syscall
         li $t7,4
@@ -117,7 +119,7 @@ out:
     
 main:
     jal get
-    jal outter_loop
+    jal bubble_sort
     jal out
 
     li      $v0,    10               # 退出，返回系统
